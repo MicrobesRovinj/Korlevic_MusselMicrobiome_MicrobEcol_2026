@@ -61,7 +61,7 @@ else
 endif
 
 ifneq ($(PROJECT_DIR), $(OLD_DIR_MANUSCRIPT))
-	$(shell sed -i 's/\(.*(<https:\/\/github.com\/MicrobesRovinj\/\)[^>]*/\1$(PROJECT_DIR)/' $(FINAL)/manuscript.Rmd)
+	$(shell sed -i 's/\(.*(<https:\/\/github.com\/MicrobesRovinj\/\)[^>]*\(>).*\)/\1$(PROJECT_DIR)\2/' $(FINAL)/manuscript.Rmd)
 	@echo "GitHub repository name has been updated in manuscript.Rmd."
 else
 	@echo "GitHub repository name is the same as in manuscript.Rmd." 
