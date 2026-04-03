@@ -3,7 +3,7 @@ mothur*logfile
 code/mothur/*
 data/*/*
 !data/raw/primer.oligos
-!data/raw/metadata.csv
+!data/raw/metadata.tsv
 !data/raw/taxa_colour.tsv
 !data/raw/colour_environment.R
 !data/raw/colour_individual.R
