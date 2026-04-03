@@ -41,7 +41,7 @@ export FINAL := submission
 # Update the name of the GitHub repository/project directory name in README.md and manuscipt.Rmd
 OLD_DIR_README_GIT := $(shell sed -n 's/^git clone https:\/\/github.com\/MicrobesRovinj\/\(.*\).git/\1/p' README.md)
 OLD_DIR_README_CD := $(shell sed -n 's/^cd \(.*\)\//\1/p' README.md)
-OLD_DIR_MANUSCRIPT := $(shell sed -n 's/.*(<https:\/\/github.com\/MicrobesRovinj\/\(.*\)>).*/\1/p' $(FINAL)/manuscript.Rmd)
+OLD_DIR_MANUSCRIPT := $(shell sed -n 's/.*(<https:\/\/github.com\/MicrobesRovinj\/\([^>]*\)>).*/\1/p' $(FINAL)/manuscript.Rmd)
 
 .PHONY : check_dir_name
 
@@ -61,7 +61,7 @@ else
 endif
 
 ifneq ($(PROJECT_DIR), $(OLD_DIR_MANUSCRIPT))
-	$(shell sed -i 's/\(.*(<https:\/\/github.com\/MicrobesRovinj\/\)[^>)]*/\1$(PROJECT_DIR)/' $(FINAL)/manuscript.Rmd)
+	$(shell sed -i 's/\(.*(<https:\/\/github.com\/MicrobesRovinj\/\)[^>]*/\1$(PROJECT_DIR)/' $(FINAL)/manuscript.Rmd)
 	@echo "GitHub repository name has been updated in manuscript.Rmd."
 else
 	@echo "GitHub repository name is the same as in manuscript.Rmd." 
