@@ -37,13 +37,17 @@ for (i in c("S.obs", "S.chao1", "S.ACE", "eshannon", "invsimpson")) {
                                                 "Seawater (Control)",
                                                 "Sediment (Control)")))
   
+  # Set seed
+  set.seed(19800101)
   # Perform the Kruskal-Wallis H test
-  kruskal <- kruskal.test(formula = value ~ group,
+  kruskal <- kruskal.test(formula = mean ~ group,
                           data = data)
   
+  # Set seed
+  set.seed(19800101)
   # Perform the pairwise Mann-Whitney U test
   pairwise_wilcox <- pairwise.wilcox.test(
-    x = data$value, g = data$group,
+    x = data$mean, g = data$group,
     p.adjust.method = "bonferroni")
   
   # Combine the statistical results of every richness estimator

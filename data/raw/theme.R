@@ -19,6 +19,7 @@ theme <- theme(# General customisation of line, text, etc. elements
                legend.margin = margin(t = 5.5, r = 5.5, b = 0, l = 0, unit = "pt"),
                legend.key = element_blank(),
                legend.text = element_text(size = 12),
+               legend.title = element_text(face = "bold", size = 14),
                legend.justification = c("left", "bottom"),
                # Panel
                panel.background = element_blank(),

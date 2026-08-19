@@ -28,7 +28,7 @@ opts_chunk$set("tidy" = TRUE)
 opts_chunk$set("echo" = FALSE)
 opts_chunk$set("eval" = TRUE)
 opts_chunk$set("warning" = FALSE)
-opts_chunk$set("cache" = TRUE)
+opts_chunk$set("cache" = FALSE)
 opts_chunk$set("message" = FALSE)
 
 ################################################################################
@@ -47,7 +47,7 @@ inline_hook <- function(x){
   
 	if(is.numeric(x)){
 		if(abs(x - round(x)) < .Machine$double.eps ^ 0.5){
-			paste(format(x, trim = TRUE, big.mark = ',', digits = 0, scientific = FALSE))
+			paste(format(x, trim = TRUE, big.mark = ',', digits = NULL, scientific = FALSE))
 		} else {
 			paste(format(x, trim = TRUE, big.mark = ',', digits = 1, nsmall = 1, scientific = FALSE))
 		}
@@ -115,12 +115,44 @@ include_graphics(path = "../results/figures/rarefaction_a.jpg")
 
 ```
 
-```{r, rarefaction-b, out.width = "85%", fig.align = "center", fig.cap = "(ref:rarefaction-b)", fig.pos = "H"}
+```{r, rarefaction-b-label}
+
+# Load rarefaction data and select values for plotting
+rarefaction <- read_tsv(file = "data/mothur/raw.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.opti_mcc.groups.rarefaction") %>%
+  select(-matches("^lci-"), -matches("^hci-")) %>%
+  pivot_longer(!numsampled, names_to = "sample", values_to = "sobs", values_drop_na = TRUE) %>%
+  mutate(sample = str_replace_all(sample, pattern = "0.03-", replacement = ""))
+
+# Load metadata
+metadata <- read_tsv(file = "data/raw/metadata.tsv")
+
+# Customise metadata using the custom function
+metadata <- format_labels(x = metadata)
+
+# Join metadata and input data
+metadata_rarefaction <- inner_join(x = metadata, y = rarefaction,
+                                   by = c("id" = "sample"))
+
+# Identify the end point values for the truncated rarefaction curve
+# (mussel with Individual Index 7 collected in Lim Bay in September 2020)
+label_values <- metadata_rarefaction %>%
+  # Filter gill samples
+  filter(environment == "Gills") %>%
+  # Filter data for mussel with Individual Index 7 collected in Lim Bay
+  # in September 2020
+  filter(location == "Lim Bay" & month == "September" & year == "2020" &
+             individual_index == "7") %>%
+  # Filter the row with the maximum number of sequences
+  filter(numsampled == max(numsampled))
+
+```
+
+```{r, rarefaction-b, out.width = "80%", fig.align = "center", fig.cap = "(ref:rarefaction-b)", fig.pos = "H"}
 
 include_graphics(path = "../results/figures/rarefaction_b.jpg")
 
 ```
-(ref:rarefaction-b) Rarefaction curves of microbial communities associated with the gills of the mussel *M. galloprovincialis* (gill microbiome). Mussels were collected in Lim Bay and Mali Ston Bay from July 2020 to May 2021. The numbers in the legend correspond to the index of each individual mussel
+(ref:rarefaction-b) Rarefaction curves of microbial communities associated with the gills of the mussel *M. galloprovincialis* (gill microbiome). Mussels were collected in Lim Bay and Mali Ston Bay from July 2020 to May 2021. The numbers in the legend correspond to the index of each individual mussel (see Supplementary Table \@ref(supp-tab:nseq-notus-gills)). The rarefaction curve marked with an asterisk (**\***) was truncated due to the high number of sequences obtained for this sample. This curve terminates at `r label_values$numsampled` sequences and `r label_values$sobs` OTUs
 
 ```{r, taxonomy-seawater-sediment-phylum, out.width = "80%", fig.align = "center", fig.cap = "(ref:taxonomy-seawater-sediment-phylum)", fig.pos = "H"}
 
@@ -129,12 +161,12 @@ include_graphics(path = "../results/figures/taxonomy_seawater_sediment_phylum.jp
 ```
 (ref:taxonomy-seawater-sediment-phylum) Taxonomic classification and relative contribution of the most abundant (\qty{>=3}{\percent}) bacterial and archaeal sequences in the seawater and sediment of Lim Bay and Mali Ston Bay. In each bay, samples were collected from one aquaculture site and one control site between July 2020 and May 2021. "No Relative" indicates sequences that could not be classified into any taxon, while "NR" (No Relative) next to the name of a taxonomic group refers to sequences that could not be assigned to any known taxon within that group. "NA" (Not Available) indicates samples that were not successfully analysed
 
-```{r, taxonomy-gills-phylum, out.width = "80%", fig.align = "center", fig.cap = "(ref:taxonomy-gills-phylum)", fig.pos = "H"}
+```{r, taxonomy-gills-phylum-without-gammaproteobacteria, out.width = "78%", fig.align = "center", fig.cap = "(ref:taxonomy-gills-phylum-without-gammaproteobacteria)", fig.pos = "H"}
 
-include_graphics(path = "../results/figures/taxonomy_gills_phylum.jpg")
+include_graphics(path = "../results/figures/taxonomy_gills_without_gammaproteobacteria.jpg")
 
 ```
-(ref:taxonomy-gills-phylum) Taxonomic classification and relative contribution of the most abundant (\qty{>=3}{\percent}) bacterial and archaeal sequences from the gills of the mussel *M. galloprovincialis* (gill microbiome). From July 2020 to May 2021, 10 mussels were collected per sampling month in Lim Bay and Mali Ston Bay. Each bar (individual index) represents an individual mussel. "No Relative" indicates sequences that could not be classified into any taxon, while "NR" (No Relative) next to the name of a taxonomic group refers to sequences that could not be assigned to any known taxon within that group. "NA" (Not Available) indicates samples that were not successfully analysed
+(ref:taxonomy-gills-phylum-without-gammaproteobacteria) Taxonomic classification and relative contribution of the most abundant (\qty{>=3}{\percent}) bacterial and archaeal sequences from the gills of the mussel *M. galloprovincialis* (gill microbiome) excluding sequences classified as *Gammaproteobacteria*. From July 2020 to May 2021, 10 mussels were collected per sampling month in Lim Bay and Mali Ston Bay. Each bar (individual index) represents an individual mussel (see Supplementary Table \@ref(supp-tab:nseq-notus-gills)). "No Relative" indicates sequences that could not be classified into any taxon, while "NR" (No Relative) next to the name of a taxonomic group refers to sequences that could not be assigned to any known taxon within that group. "NA" (Not Available) indicates samples that were not successfully analysed
 
 ## Supplementary tables
 

@@ -226,12 +226,11 @@ $(BASIC_STEM).pick.pick.error.summary &: code/get_processed.batch\
 #########################################################################################
 
 # Calculate the parameters of alpha diversity
-$(NUM)/rarefied.Rdata\
 $(NUM)/alpha.Rdata &: code/calculate_alpha.R\
                       $(BASIC_STEM).pick.pick.opti_mcc.shared\
-                      $(FUN)/custom_rrarefy.R\
                       $(RAW)/metadata.tsv\
-                      $(FUN)/format_labels.R
+                      $(FUN)/format_labels.R\
+                      $(FUN)/custom_alpha_parameters.R
 	R -e "source('code/calculate_alpha.R')"
 
 # Calculate the statistics for alpha diversity parameters
@@ -242,13 +241,14 @@ $(NUM)/kruskal_wallis.Rdata : code/calculate_alpha_statistics.R\
 
 #########################################################################################
 #
-# Part 5: Generate figures and tables
+# Part 5: Generate figures and numerical results 
 #
-# 	Run scripts to generate figures and tables.
+# 	Run the scripts to generate the figures and numerical results.
 #
 #########################################################################################
 
 # Construct the rarefaction plots
+$(BASIC_STEM).pick.pick.opti_mcc.groups.rarefaction\
 $(FIGS)/rarefaction_a.jpg\
 $(FIGS)/rarefaction_b.jpg &: code/get_rarefaction.batch\
                              $(BASIC_STEM).pick.pick.opti_mcc.shared\
@@ -276,30 +276,33 @@ $(FIGS)/alpha.jpg : code/plot_alpha.R\
                     $(FUN)/custom_cld.R
 	R -e "source('code/plot_alpha.R')"
 
-# Calculate the metrics of beta diversity and construct the beta diversity plot
-$(NUM)/beta.Rdata\
-$(FIGS)/beta.jpg &: code/plot_beta.R\
+# Construct the NMDS plots
+$(NUM)/permanova.Rdata\
+$(FIGS)/nmds.jpg &: code/plot_nmds.R\
                     $(BASIC_STEM).pick.pick.opti_mcc.shared\
                     $(RAW)/metadata.tsv\
-                    $(FUN)/custom_bray.R\
                     $(FUN)/format_labels.R\
-                    $(FUN)/custom_rrarefy.R\
-                    $(FUN)/scaleFUN.R\
-                    $(RAW)/theme.R
-	R -e "source('code/plot_beta.R')"
+                    $(FUN)/custom_avg_bray.R\
+                    $(RAW)/colour_environment.R\
+                    $(RAW)/shape_site.R\
+                    $(RAW)/theme.R\
+                    $(RAW)/colour_month.R\
+                    $(RAW)/shape_location.R
+	R -e "source('code/plot_nmds.R')"
 
 # Construct the taxonomy plots
 $(FIGS)/taxonomy_environments_sites.jpg\
 $(FIGS)/taxonomy_seawater_sediment_phylum.jpg\
 $(FIGS)/taxonomy_gills_phylum.jpg\
-$(FIGS)/taxonomy_gills_genus.jpg &: code/plot_taxonomy.R\
-                                    $(BASIC_STEM).silva.wang.tax.summary\
-                                    $(FUN)/custom_clean_taxonomy.R\
-                                    $(RAW)/taxa_colour.tsv\
-                                    $(RAW)/metadata.tsv\
-                                    $(FUN)/format_labels.R\
-                                    $(FUN)/custom_structure_taxonomy.R\
-                                    $(FUN)/italicise_names.R
+$(FIGS)/taxonomy_gills_genus.jpg\
+$(FIGS)/taxonomy_gills_without_gammaproteobacteria.jpg &: code/plot_taxonomy.R\
+                                                          $(BASIC_STEM).silva.wang.tax.summary\
+                                                          $(FUN)/custom_clean_taxonomy.R\
+                                                          $(RAW)/taxa_colour.tsv\
+                                                          $(RAW)/metadata.tsv\
+                                                          $(FUN)/format_labels.R\
+                                                          $(FUN)/custom_structure_taxonomy.R\
+                                                          $(FUN)/italicise_names.R
 	R -e "source('code/plot_taxonomy.R')"
 
 ##########################################################################################
@@ -318,33 +321,33 @@ $(FINAL)/supplementary.pdf &: $(FINAL)/manuscript.Rmd\
                               $(FINAL)/before_body_manuscript.tex\
                               .Rprofile\
                               $(BASIC_STEM).pick.pick.opti_mcc.shared\
-                              $(NUM)/rarefied.Rdata\
                               $(BASIC_STEM).pick.pick.error.summary\
                               $(BASIC_STEM).silva.wang.tax.summary\
                               $(RAW)/metadata.tsv\
                               $(NUM)/alpha.Rdata\
                               $(NUM)/kruskal_wallis.Rdata\
-                              $(NUM)/beta.Rdata\
+                              $(NUM)/permanova.Rdata\
                               $(FIGS)/map.jpg\
                               $(MOTHUR)\
                               $(FUN)/format_p_values.R\
                               $(FIGS)/alpha.jpg\
-                              $(FUN)/format_labels.R\
-                              $(FUN)/custom_bray.R\
-                              $(FUN)/custom_rrarefy.R\
+                              $(FIGS)/nmds.jpg\
                               $(FUN)/custom_round.R\
-                              $(FIGS)/beta.jpg\
-                              $(FIGS)/taxonomy_environments_sites.jpg\
                               $(FUN)/custom_clean_taxonomy.R\
                               $(FUN)/custom_structure_taxonomy.R\
+                              $(FUN)/format_labels.R\
                               $(FUN)/custom_min_max.R\
+                              $(FIGS)/taxonomy_environments_sites.jpg\
+                              $(FIGS)/taxonomy_gills_phylum.jpg\
                               $(FIGS)/taxonomy_gills_genus.jpg\
+                              $(FUN)/custom_num_to_text.R\
                               $(FINAL)/supplementary.Rmd\
                               $(FINAL)/before_body_supplementary.tex\
                               $(FIGS)/rarefaction_a.jpg\
+                              $(BASIC_STEM).pick.pick.opti_mcc.groups.rarefaction\
                               $(FIGS)/rarefaction_b.jpg\
                               $(FIGS)/taxonomy_seawater_sediment_phylum.jpg\
-                              $(FIGS)/taxonomy_gills_phylum.jpg
+                              $(FIGS)/taxonomy_gills_without_gammaproteobacteria.jpg
 	R -e 'render("$(FINAL)/manuscript.Rmd", clean = FALSE)'
 	R -e 'render("$(FINAL)/supplementary.Rmd", clean = FALSE)'
 	rm $(FINAL)/*.knit.md $(FINAL)/*.log
@@ -364,6 +367,8 @@ clean :
                              -not -name "colour_individual.R"\
                              -not -name "colour_month.R"\
                              -not -name "linetype_site.R"\
+                             -not -name "shape_site.R"\
+                             -not -name "shape_location.R"\
                              -not -name "NC_24025-0094_all_R1.fastq"\
                              -not -name "NC_24025-0094_all_R2.fastq"\
                              -not -name "NC_24025-0172_all_R1.fastq"\

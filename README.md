@@ -46,25 +46,26 @@ This is the repository for the manuscript "Resident and transient microbial taxa
 * GNU Bash (v. 5.2.21(1)), should be located in user's PATH
 * GNU Make (v. 4.3), should be located in user's PATH
 * mothur (v. 1.48.2)
-* R (v. 4.5.3), should be located in user's PATH
+* R (v. 4.6.1), should be located in user's PATH
 * R packages:
-  * `stats (v. 4.5.3)`
-  * `grid (v. 4.5.3)`
-  * `vctrs (v. 0.6.5)`
+  * `stats (v. 4.6.1)`
+  * `grid (v. 4.6.1)`
+  * `vctrs (v. 0.7.3)`
   * `gtable (v. 0.3.6)`
   * `plyr (v. 1.8.9)`
-  * `lazyeval (v. 0.2.2)`
-  * `ggforce (v. 0.4.2)`
-  * `knitr (v. 1.50)`
-  * `rmarkdown (v. 2.29)`
-  * `bookdown (v. 0.45)`
-  * `tinytex (v. 0.59)`
+  * `lazyeval (v. 0.2.3)`
+  * `ggforce (v. 0.5.0)`
+  * `knitr (v. 1.51)`
+  * `rmarkdown (v. 2.31)`
+  * `bookdown (v. 0.47)`
+  * `tinytex (v. 0.60)`
   * `kableExtra (v. 1.4.0)`
-  * `vegan (v. 2.6-10)`
+  * `vegan (v. 2.7-5)`
+  * `pairwiseAdonis (v. 0.4.1)`
   * `RColorBrewer (v. 1.1-3)`
-  * `cowplot (v. 1.1.3)`
+  * `cowplot (v. 1.2.0)`
   * `ggh4x (v. 0.3.0)`
-  * `legendry (v. 0.2.4)`
+  * `legendry (v. 0.3.0)`
   * `cld (v. 0.0.1)`
   * `ggnewscale (v. 0.5.2)`
   * `tidyverse (v. 2.0.0)`

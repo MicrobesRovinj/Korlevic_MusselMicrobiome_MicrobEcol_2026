@@ -86,7 +86,7 @@ custom_plot_alpha <- function(input = NULL, filter_parameter = NULL, cld = NULL,
     # Filter samples to be plotted
     filter(parameter == filter_parameter) %>%
     # Initialise a ggplot object and define the aesthetic mappings
-    ggplot(mapping = aes(x = interaction(environment, site), y = value, fill = environment)) +
+    ggplot(mapping = aes(x = interaction(environment, site), y = mean, fill = environment)) +
     # Add a rectangle to emphasise the distinction between the control and
     # the aquaculture samples
     annotate(geom = "rect", xmin = 3.5, xmax = Inf, ymin = 0, ymax = Inf,

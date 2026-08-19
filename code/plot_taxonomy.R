@@ -13,6 +13,7 @@
 #           results/figures/taxonomy_seawater_sediment_phylum.jpg
 #           results/figures/taxonomy_gills_phylum.jpg
 #           results/figures/taxonomy_gills_genus.jpg
+#           results/figures/taxonomy_gills_without_gammaproteobacteria.jpg
 #
 #################################################################################################################
 
@@ -320,4 +321,74 @@ for (i in seq(1 : nrow(plots))) {
          plot = p, width = 210 * 1.33, height = 297 * 1.33, units = "mm")
   
 }
+
+#################################################################################################################
+# Generate taxonomy plot for gill samples excluding Gammaproteobacteria
+#################################################################################################################
+
+# Prepare taxonomy data for plotting using the custom function
+gills <- custom_structure_taxonomy(input = taxonomy,
+                                   metadata = metadata,
+                                   taxa_colour = colour,
+                                   select_environment = "Gills",
+                                   select_taxlevel = 2,
+                                   threshold = 3,
+                                   include_chloroplast = FALSE,
+                                   split_pseudomonadota = TRUE)
+
+# Generate plot
+p <- gills$longer_metadata_taxonomy %>%
+  # Exclude Gammaproteobacteria
+  filter(taxon != "Gammaproteobacteria") %>%
+  # Create a complete dataset by filling in missing combinations of the
+  # defined variables (NA is inserted for any missing values)
+  complete(nesting(month, year), location, individual_index) %>%
+  # Initialise a ggplot object and define the aesthetic mappings
+  ggplot(mapping = aes(x = individual_index, y = proportion, fill = taxon)) +
+  # Create stacked bar charts and specify their appearance
+  geom_bar(stat = "identity", colour = "black", linewidth = 0.5) +
+  # Add "NA" labels for missing samples and specify their appearance
+  geom_text(mapping = aes(y = 0,
+                          label = if_else(condition = is.na(x = proportion),
+                                          true = "NA",
+                                          false = NA)),
+            family = "Times",
+            size = 4, vjust = -0.7) +
+  # Customise the discrete scale of the x-axis
+  scale_x_discrete() +
+  # Customise the continuous scale of the y-axis
+  scale_y_continuous(breaks = custom_breaks,
+                     limits = custom_limits,
+                     expand = c(0, 0)) +
+  # Specify the fill colours for the stacked bar charts
+  scale_fill_manual(name = NULL,
+                    labels = italicise_names(
+                      input = levels(
+                        x = gills$longer_metadata_taxonomy$taxon)),
+                    guide = guide_legend(order = 1),
+                    values = colour,
+                    breaks = levels(
+                      x = gills$longer_metadata_taxonomy$taxon)) +
+  # Define axes titles and plot title
+  labs(title = NULL,
+       x = "Individual Index", y = "%") +
+  # Create multiple plots with nested strips
+  facet_nested(rows = vars(year, month), cols = vars(location),
+               scales = "free_y", axes = "all", remove_labels = "x",
+               independent = "y", switch = "y",
+               nest_line = element_line(linewidth = 0.5),
+               resect = unit(x = 5.5 * 2, "pt")) +
+  # Use general custom theme
+  theme +
+  # Add additional plot customisations
+  theme(axis.title.x = element_text(vjust = -2, margin = margin(b = 20, unit = "pt")),
+        axis.title.y = element_text(vjust = -24),
+        legend.key.spacing.y = unit(x = 1.5, units = "pt"),
+        panel.spacing = unit(x = 5.5 * 4, units =  "pt"),
+        strip.text = element_text(size = 22),
+        strip.switch.pad.grid = unit(x = 24, units = "pt"))
+
+# Save
+ggsave(filename = "results/figures/taxonomy_gills_without_gammaproteobacteria.jpg",
+       plot = p, width = 210 * 1.33, height = 297 * 1.33, units = "mm")
 

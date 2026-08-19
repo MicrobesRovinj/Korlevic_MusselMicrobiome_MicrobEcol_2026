@@ -39,6 +39,7 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -320,11 +321,11 @@ ORCID iD: \href{https://orcid.org/0000-0001-6899-9605}{0000-0001-6899-9605}
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=0.85\linewidth]{../results/figures/rarefaction_b} 
+{\centering \includegraphics[width=0.8\linewidth]{../results/figures/rarefaction_b} 
 
 }
 
-\caption{Rarefaction curves of microbial communities associated with the gills of the mussel \emph{M. galloprovincialis} (gill microbiome). Mussels were collected in Lim Bay and Mali Ston Bay from July 2020 to May 2021. The numbers in the legend correspond to the index of each individual mussel}\label{fig:rarefaction-b}
+\caption{Rarefaction curves of microbial communities associated with the gills of the mussel \emph{M. galloprovincialis} (gill microbiome). Mussels were collected in Lim Bay and Mali Ston Bay from July 2020 to May 2021. The numbers in the legend correspond to the index of each individual mussel (see Supplementary Table \ref{supp-tab:nseq-notus-gills}). The rarefaction curve marked with an asterisk (\textbf{*}) was truncated due to the high number of sequences obtained for this sample. This curve terminates at 60,611 sequences and 601 OTUs}\label{fig:rarefaction-b}
 \end{figure}
 
 
@@ -342,11 +343,11 @@ ORCID iD: \href{https://orcid.org/0000-0001-6899-9605}{0000-0001-6899-9605}
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=0.8\linewidth]{../results/figures/taxonomy_gills_phylum} 
+{\centering \includegraphics[width=0.78\linewidth]{../results/figures/taxonomy_gills_without_gammaproteobacteria} 
 
 }
 
-\caption{Taxonomic classification and relative contribution of the most abundant (\qty{>=3}{\percent}) bacterial and archaeal sequences from the gills of the mussel \emph{M. galloprovincialis} (gill microbiome). From July 2020 to May 2021, 10 mussels were collected per sampling month in Lim Bay and Mali Ston Bay. Each bar (individual index) represents an individual mussel. ``No Relative'' indicates sequences that could not be classified into any taxon, while ``NR'' (No Relative) next to the name of a taxonomic group refers to sequences that could not be assigned to any known taxon within that group. ``NA'' (Not Available) indicates samples that were not successfully analysed}\label{fig:taxonomy-gills-phylum}
+\caption{Taxonomic classification and relative contribution of the most abundant (\qty{>=3}{\percent}) bacterial and archaeal sequences from the gills of the mussel \emph{M. galloprovincialis} (gill microbiome) excluding sequences classified as \emph{Gammaproteobacteria}. From July 2020 to May 2021, 10 mussels were collected per sampling month in Lim Bay and Mali Ston Bay. Each bar (individual index) represents an individual mussel (see Supplementary Table \ref{supp-tab:nseq-notus-gills}). ``No Relative'' indicates sequences that could not be classified into any taxon, while ``NR'' (No Relative) next to the name of a taxonomic group refers to sequences that could not be assigned to any known taxon within that group. ``NA'' (Not Available) indicates samples that were not successfully analysed}\label{fig:taxonomy-gills-phylum-without-gammaproteobacteria}
 \end{figure}
 
 
@@ -734,13 +735,13 @@ ORCID iD: \href{https://orcid.org/0000-0001-6899-9605}{0000-0001-6899-9605}
 \nopagebreak
  &  &  &  & Sediment (Aquaculture)–Seawater (Control) & <0.0001\\
 \nopagebreak
- &  &  &  & Sediment (Aquaculture)–Sediment (Control) & 0.60\\
+ &  &  &  & Sediment (Aquaculture)–Sediment (Control) & 0.33\\
 \nopagebreak
  &  &  &  & Gills (Aquaculture)–Seawater (Control) & <0.001\\
 \nopagebreak
  &  &  &  & Gills (Aquaculture)–Sediment (Control) & <0.0001\\
 \nopagebreak
-\multirow{-10}{\textwidth / 8}{\centering\arraybackslash Observed No. of OTUs} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 79.1} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 4} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash <0.0001} & Seawater (Control)–Sediment (Control) & <0.0001\\
+\multirow{-10}{\textwidth / 8}{\centering\arraybackslash Observed No. of OTUs} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 78.6} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 4} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash <0.0001} & Seawater (Control)–Sediment (Control) & <0.0001\\
 \cmidrule{1-6}\pagebreak[0]
  &  &  &  & Seawater (Aquaculture)–Sediment (Aquaculture) & <0.0001\\
 \nopagebreak
@@ -760,7 +761,7 @@ ORCID iD: \href{https://orcid.org/0000-0001-6899-9605}{0000-0001-6899-9605}
 \nopagebreak
  &  &  &  & Gills (Aquaculture)–Sediment (Control) & <0.0001\\
 \nopagebreak
-\multirow{-10}{\textwidth / 8}{\centering\arraybackslash Chao1} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 60.3} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 4} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash <0.0001} & Seawater (Control)–Sediment (Control) & <0.0001\\
+\multirow{-10}{\textwidth / 8}{\centering\arraybackslash Chao1} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 60.1} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 4} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash <0.0001} & Seawater (Control)–Sediment (Control) & <0.0001\\
 \cmidrule{1-6}\pagebreak[0]
  &  &  &  & Seawater (Aquaculture)–Sediment (Aquaculture) & <0.0001\\
 \nopagebreak
@@ -780,7 +781,7 @@ ORCID iD: \href{https://orcid.org/0000-0001-6899-9605}{0000-0001-6899-9605}
 \nopagebreak
  &  &  &  & Gills (Aquaculture)–Sediment (Control) & <0.0001\\
 \nopagebreak
-\multirow{-10}{\textwidth / 8}{\centering\arraybackslash ACE} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 60.0} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 4} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash <0.0001} & Seawater (Control)–Sediment (Control) & <0.0001\\
+\multirow{-10}{\textwidth / 8}{\centering\arraybackslash ACE} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 60.1} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 4} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash <0.0001} & Seawater (Control)–Sediment (Control) & <0.0001\\
 \cmidrule{1-6}\pagebreak[0]
  &  &  &  & Seawater (Aquaculture)–Sediment (Aquaculture) & <0.0001\\
 \nopagebreak
@@ -794,13 +795,13 @@ ORCID iD: \href{https://orcid.org/0000-0001-6899-9605}{0000-0001-6899-9605}
 \nopagebreak
  &  &  &  & Sediment (Aquaculture)–Seawater (Control) & <0.0001\\
 \nopagebreak
- &  &  &  & Sediment (Aquaculture)–Sediment (Control) & 0.68\\
+ &  &  &  & Sediment (Aquaculture)–Sediment (Control) & 0.60\\
 \nopagebreak
  &  &  &  & Gills (Aquaculture)–Seawater (Control) & <0.0001\\
 \nopagebreak
  &  &  &  & Gills (Aquaculture)–Sediment (Control) & <0.0001\\
 \nopagebreak
-\multirow{-10}{\textwidth / 8}{\centering\arraybackslash Exponential Shannon} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 93.8} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 4} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash <0.0001} & Seawater (Control)–Sediment (Control) & <0.0001\\
+\multirow{-10}{\textwidth / 8}{\centering\arraybackslash Exponential Shannon} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 93.9} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 4} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash <0.0001} & Seawater (Control)–Sediment (Control) & <0.0001\\
 \cmidrule{1-6}\pagebreak[0]
  &  &  &  & Seawater (Aquaculture)–Sediment (Aquaculture) & <0.0001\\
 \nopagebreak
@@ -820,7 +821,7 @@ ORCID iD: \href{https://orcid.org/0000-0001-6899-9605}{0000-0001-6899-9605}
 \nopagebreak
  &  &  &  & Gills (Aquaculture)–Sediment (Control) & <0.0001\\
 \nopagebreak
-\multirow{-10}{\textwidth / 8}{\centering\arraybackslash Inverse Simpson} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 95.5} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 4} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash <0.0001} & Seawater (Control)–Sediment (Control) & <0.0001\\*
+\multirow{-10}{\textwidth / 8}{\centering\arraybackslash Inverse Simpson} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 95.4} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash 4} & \multirow{-10}{\textwidth / 16}{\centering\arraybackslash <0.0001} & Seawater (Control)–Sediment (Control) & <0.0001\\*
 \end{longtable}
 \endgroup{}
 

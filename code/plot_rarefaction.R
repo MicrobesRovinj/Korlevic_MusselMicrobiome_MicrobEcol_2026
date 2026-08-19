@@ -1,7 +1,7 @@
 #################################################################################################################
 # plot_rarefaction.R
 # 
-# Script to plot the rarefaction curve of each sample.
+# Script to plot the rarefaction curve for each sample.
 # Dependencies: data/mothur/raw.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.opti_mcc.groups.rarefaction
 #               data/raw/metadata.tsv
 #               code/functions/format_labels.R
@@ -43,7 +43,7 @@ source(file = "data/raw/colour_individual.R")
 
 # Generate plots
 p <- metadata_rarefaction %>%
-  # Filter samples to be plotted 
+  # Filter samples to plot
   filter(environment == "Seawater" | environment == "Sediment") %>%
   # Initialise a ggplot object and define the aesthetic mappings
   ggplot(aes(x = numsampled, y = sobs, group = id,
@@ -53,6 +53,7 @@ p <- metadata_rarefaction %>%
   geom_line(linewidth = 1.0) +
   # Specify the colour of the lines
   scale_colour_manual(name = NULL,
+                      guide = guide_legend(order = 1),
                       values = colour_month,
                       breaks = names(colour_month)) +
   # Specify the type of the lines
@@ -67,7 +68,7 @@ p <- metadata_rarefaction %>%
   scale_y_continuous(breaks = custom_breaks,
                      limits = custom_limits,
                      expand = c(0, 0)) +
-  # Define axes titles and plot title
+  # Define axis titles and plot title
   labs(title = NULL,
        x = "Number of Sequences", y = "Number of OTUs") +
   # Create multiple plots arranged in a grid
@@ -90,15 +91,38 @@ ggsave("results/figures/rarefaction_a.jpg",
 # Generate rarefaction plots for gill samples
 #################################################################################################################
 
+# Set the position of the label for the rarefaction curve that needs
+# to be truncated (mussel with Individual Index 7 collected in Lim Bay
+# in September 2020)
+label_position <- metadata_rarefaction %>%
+  # Filter gill samples
+  filter(environment == "Gills") %>%
+  # Filter data for mussel with Individual Index 7 collected in Lim Bay
+  # in September 2020
+  filter(location == "Lim Bay" & month == "September" & year == "2020" &
+             individual_index == "7") %>%
+  # Filter row containing the maximum number of sequences (could be any row)
+  filter(numsampled == max(numsampled)) %>%
+  # Set the position of the label
+  mutate(sobs = 425, numsampled = 19500)
+
 # Generate plots
 p <- metadata_rarefaction %>%
-  # Filter samples to be plotted 
+  # Filter samples to plot
   filter(environment == "Gills") %>%
+  # Filter out the Number of Sequences greater than 20000 for the mussel
+  # with Individual Index 7 collected in Lim Bay in September 2020 to
+  # truncate the rarefaction curve
+  filter(!(location == "Lim Bay" & month == "September" & year == "2020" &
+           individual_index == "7" & numsampled > 20000)) %>%
   # Initialise a ggplot object and define the aesthetic mappings
   ggplot(aes(x = numsampled, y = sobs,
              group = id, colour = individual_index)) +
   # Add lines and specify their width
   geom_line(linewidth = 1.0) +
+  # Add asterisk for the truncated curve and customise its appearance
+  geom_text(data = label_position, label = "*", colour = "black",
+            family = "Times", fontface = "bold", size = 8) +
   # Specify the colour of the lines
   scale_colour_manual(name = NULL,
                       values = colour_individual,
@@ -111,7 +135,7 @@ p <- metadata_rarefaction %>%
   scale_y_continuous(breaks = custom_breaks,
                      limits = custom_limits,
                      expand = c(0, 0)) +
-  # Define axes titles and plot title
+  # Define axis titles and plot title
   labs(title = NULL,
        x = "Number of Sequences", y = "Number of OTUs") +
   # Create multiple plots with nested strips
